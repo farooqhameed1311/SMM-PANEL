@@ -22,8 +22,8 @@
     /*<![CDATA[*/
         /* --- DYNAMIC THEME VARIABLES --- */
         :root {
-            --p1: #0ea5e9; /* Primary Accent */
-            --p2: #8b5cf6; /* Secondary Accent */
+            --p1: #0ea5e9;
+            --p2: #8b5cf6;
             --bg-color: #030407;
             --card-bg: #0b0d14;
             --card-border: rgba(255, 255, 255, 0.06);
@@ -138,8 +138,9 @@
         .cash-card:hover { border-color: var(--p1); }
         .cash-card img { width: 100%; border-radius: 14px; margin-bottom: 20px; max-height: 180px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
         
-        /* SPONSOR BANNER UI */
-        .sponsor-banner-ui { background: rgba(245, 158, 11, 0.05); border: 1px dashed rgba(245, 158, 11, 0.4); border-radius: 16px; padding: 20px; margin-bottom: 25px; text-align: center; transition: 0.3s; }
+        /* Premium Sponsor Display Box */
+        .sponsor-display-box { background: rgba(245, 158, 11, 0.08); border: 1px dashed rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 15px; margin-top: 15px; text-align: center; }
+        .sponsor-banner-ui { background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 16px; padding: 20px; margin-bottom: 25px; text-align: center; transition: 0.3s; }
         .sponsor-banner-ui:hover { background: rgba(245, 158, 11, 0.1); border-color: #f59e0b; }
 
         .poll-bar-bg { background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; margin-bottom: 15px; position: relative; height: 50px; }
@@ -335,7 +336,7 @@
                         
                         <div id="referralInputWrapper">
                             <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-                                <span style="color:var(--text-muted); font-family:monospace;">fho-giveaways.vercel.app/?ref=</span>
+                                <span style="color:var(--text-muted); font-family:monospace;">fho.com/?ref=</span>
                                 <input class="input-box" id="userRefHandle" placeholder="YourName" style="margin-bottom:0; flex:1; min-width: 100px;" type="text"/>
                             </div>
                             <button id="btnClaimRef" class="btn" onclick="claimReferralHandle()"><i class="fa-solid fa-check"></i> Claim Link</button>
@@ -401,13 +402,20 @@
                         <div id="adminOutput" style="margin-top:25px; max-height:200px; overflow:auto; font-family:monospace; color:var(--p1); font-size:14px; background:rgba(0,0,0,0.8); padding: 20px; border-radius: 12px; display:none;"></div>
                     </div>
 
-                    <div class="glass-panel">
+                    <div class="glass-panel" style="border-color: rgba(225, 29, 72, 0.4);">
                         <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-square-poll-vertical"></i> Deploy Winner Poll</h3>
                         <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Set up a live community vote to decide a cash prize winner.</p>
                         
                         <input class="input-box" id="pollTitle" placeholder="Poll Title (e.g., $100 Prize Winner)" type="text"/>
                         <textarea class="input-box" id="pollCandidates" placeholder="Enter Participant Names (comma separated)"></textarea>
                         <input class="input-box" id="pollDuration" placeholder="Duration (Minutes)" type="number"/>
+
+                        <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-top:10px; display:block;">Sponsorship Details (Optional)</label>
+                        <div class="responsive-2col" style="margin-top:8px; margin-bottom:20px;">
+                            <input class="input-box" id="pollSponsorName" placeholder="Sponsor Name" type="text" style="margin-bottom:0;"/>
+                            <input class="input-box" id="pollSponsorLink" placeholder="Sponsor URL" type="text" style="margin-bottom:0;"/>
+                        </div>
+                        <input class="input-box" id="pollSponsorPromo" placeholder="Sponsor Promo Text (e.g. 50% Off Code: FHO50)" type="text"/>
                         
                         <div style="display:flex; gap:15px; flex-wrap:wrap;">
                             <button class="btn" onclick="createPoll()"><i class="fa-solid fa-play"></i> Start Poll</button>
@@ -432,7 +440,7 @@
                             <h3 style="font-size: 20px; letter-spacing:-1px;"><i class="fa-solid fa-address-book" style="color:#10b981;"></i> User Payout Directory</h3>
                             <button class="btn btn-outline" onclick="loadPayoutDirectory()" style="padding: 8px 16px; font-size: 13px;"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
                         </div>
-                        <div id="adminPayoutOutput"><span style="color: var(--text-muted); font-size: 14px;">Loading payout accounts...</span></div>
+                        <div id="adminPayoutOutput"><span style="color: var(--text-muted); font-size: 14px;">Loading payment accounts...</span></div>
                     </div>
 
                     <div class="glass-panel" style="overflow-x: auto;">
@@ -443,7 +451,7 @@
                         <div id="analyticsOutput"><span style="color: var(--text-muted); font-size: 15px;">Loading network data...</span></div>
                     </div>
 
-                    <div class="glass-panel">
+                    <div class="glass-panel" style="border-color: rgba(245, 158, 11, 0.3);">
                         <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-ad"></i> Global Ad Network</h3>
                         <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Manage up to 10 ad codes and inject them instantly.</p>
                         
@@ -493,6 +501,12 @@
                             <input class="input-box" id="cashTitle" placeholder="Title" type="text"/>
                             <input class="input-box" id="cashAmount" placeholder="Amount (PKR)" type="number"/>
                             <input class="input-box" id="cashImg" placeholder="Image URL" type="text"/>
+                            
+                            <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-top:10px; display:block;">Sponsorship Details (Optional)</label>
+                            <input class="input-box" id="cashSponsorName" placeholder="Sponsor Name" type="text" style="margin-top:8px;"/>
+                            <input class="input-box" id="cashSponsorPromo" placeholder="Sponsor Promo Text" type="text"/>
+                            <input class="input-box" id="cashSponsorLink" placeholder="Sponsor URL" type="text"/>
+
                             <button class="btn" onclick="postCashGiveaway()">Deploy Cash</button>
                         </div>
                         
@@ -709,7 +723,13 @@
                 const data = docSnap.data(); pSec.style.display = 'block';
                 if(data.status === 'active') window.activePollEndTime = data.endTime.toDate(); else window.activePollEndTime = null;
 
-                let html = `<h3 style="font-size:20px; font-weight:800; letter-spacing:-1px; margin-bottom:20px;">${data.title}</h3>`;
+                let html = `<div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;"><h3 style="font-size:20px; font-weight:800; letter-spacing:-1px; margin-bottom:20px;">${data.title}</h3>`;
+                
+                // INJECT SPONSOR TAG IF EXISTS
+                if(data.sponsor && data.sponsor.name) {
+                    html += `<a href="${data.sponsor.link || '#'}" target="_blank" style="text-decoration:none;"><div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 6px 12px; display:inline-block;"><span style="font-size: 9px; color: #f59e0b; text-transform: uppercase; font-weight: 800; display:block;">Sponsored By</span><div style="font-weight: 700; color: #fff; font-size: 13px;">${data.sponsor.name}</div></div></a>`;
+                }
+                html += `</div>`;
                 
                 if(data.status === 'ended') {
                     const endedTime = data.endedAt || 0; const timePassed = Date.now() - endedTime; const thirtyMins = 30 * 60 * 1000;
@@ -717,6 +737,11 @@
 
                     html += `<div class="discount-badge" style="font-size:14px; padding: 12px 24px;"><i class="fa-solid fa-trophy"></i> Winner: ${data.winner}</div>`;
                     html += `<p style="font-size:13px; color:var(--text-muted); margin-top:10px;">This banner clears automatically in 30 mins.</p>`;
+                    
+                    if(data.sponsor && data.sponsor.promo) {
+                        html += `<div style="margin-top:15px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; font-size:13px; color:var(--text-muted); border-left: 3px solid #f59e0b;">${data.sponsor.promo}</div>`;
+                    }
+
                     if(endedTime > 0) setTimeout(() => { pSec.style.display = 'none'; }, thirtyMins - timePassed);
 
                     if(auth.currentUser && auth.currentUser.displayName === data.winner) {
@@ -744,6 +769,10 @@
                         </div>`;
                     }
                     html += `</div>`;
+                    
+                    if(data.sponsor && data.sponsor.promo) {
+                        html += `<div style="margin-top:15px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; font-size:13px; color:var(--text-muted); border-left: 3px solid #f59e0b;">${data.sponsor.promo}</div>`;
+                    }
                 }
                 pCont.innerHTML = html;
             });
@@ -826,6 +855,7 @@
                 await hRef.set({ uid: auth.currentUser.uid, createdAt: firebase.firestore.FieldValue.serverTimestamp() }); 
                 await db.collection('users').doc(auth.currentUser.uid).set({ referralHandle: h, referrals: 0 }, { merge: true }); 
                 showToast("Referral Link Claimed!", "success"); 
+                loadUserSettings();
             }
         }
 
@@ -839,7 +869,7 @@
                         document.getElementById('referralInputWrapper').style.display = 'none';
                         const activeRef = document.getElementById('activeRefLink');
                         activeRef.style.display = 'block';
-                        activeRef.innerHTML = `Your Link: <span style="color:var(--text-main); font-weight:500;">fho-giveaways.vercel.app/?ref=${d.referralHandle}</span> <br><span style="color:var(--text-main); font-weight:600; font-size:13px; margin-top:15px; display:inline-block; background:rgba(255,255,255,0.05); padding:10px 20px; border-radius:12px; border:1px solid var(--card-border);"><i class="fa-solid fa-users" style="color:var(--p1); margin-right:8px;"></i> Total Invites: ${d.referrals || 0}</span>`;
+                        activeRef.innerHTML = `Your Link: <span style="color:var(--text-main); font-weight:500;">fho.com/?ref=${d.referralHandle}</span> <br><span style="color:var(--text-main); font-weight:600; font-size:13px; margin-top:15px; display:inline-block; background:rgba(255,255,255,0.05); padding:10px 20px; border-radius:12px; border:1px solid var(--card-border);"><i class="fa-solid fa-users" style="color:var(--p1); margin-right:8px;"></i> Total Invites: ${d.referrals || 0}</span>`;
                     }
                 }
             });
@@ -905,7 +935,7 @@
                     <p style="font-size:13px; color:var(--text-muted); margin: 12px 0;">Share our official WhatsApp Group to reveal a secret bonus asset!</p>
                     <button class="btn btn-outline" style="padding: 12px 20px; font-size:13px;" onclick="shareBonus('x')"><i class="fa-brands fa-x-twitter"></i> Post</button>
                     <button class="btn btn-outline" style="padding: 12px 20px; font-size:13px; margin-left:8px;" onclick="shareBonus('fb')"><i class="fa-brands fa-facebook"></i> Share</button>
-                    <div id="bonusAssetBox" style="display:none; margin-top:20px; background:linear-gradient(135deg, rgba(16, 185, 129, 0.1), transparent); border:1px solid rgba(16, 185, 129, 0.3); padding:15px; border-radius:12px; color:#10b981; font-weight:700;"><i class="fa-solid fa-unlock-keyhole"></i> Bonus Unlocked: <a href="fho-giveaways.vercel.app" target="_blank" style="color:#10b981; text-decoration:underline;">Click Here</a></div>
+                    <div id="bonusAssetBox" style="display:none; margin-top:20px; background:linear-gradient(135deg, rgba(16, 185, 129, 0.1), transparent); border:1px solid rgba(16, 185, 129, 0.3); padding:15px; border-radius:12px; color:#10b981; font-weight:700;"><i class="fa-solid fa-unlock-keyhole"></i> Bonus Unlocked: <a href="fho.com" target="_blank" style="color:#10b981; text-decoration:underline;">Click Here</a></div>
                 </div>`;
             document.getElementById('rewardPreview').innerHTML = `
                 <div class="discount-badge"><i class="fa-solid fa-circle-check"></i> Verified Asset</div>
@@ -920,7 +950,7 @@
         }
 
         window.shareBonus = function(p) {
-            let ref = document.getElementById('userRefHandle').value, targetUrl = ref ? `fho-giveaways.vercel.app/?ref=${ref}` : 'https://chat.whatsapp.com/D2wgeEuG36X0pscOqtFnni', u = encodeURIComponent(targetUrl);
+            let ref = document.getElementById('userRefHandle').value, targetUrl = ref ? `https://fho.com/?ref=${ref}` : 'https://chat.whatsapp.com/D2wgeEuG36X0pscOqtFnni', u = encodeURIComponent(targetUrl);
             window.open(p==='fb'?`https://www.facebook.com/sharer/sharer.php?u=${u}`:`https://twitter.com/intent/tweet?url=${u}`, '_blank', 'width=600,height=400');
             setTimeout(() => { document.getElementById('bonusAssetBox').style.display = 'block'; showToast('Bonus Unlocked!', 'success'); confetti({particleCount:50, origin:{y:0.8}}); }, 3000);
         }
@@ -964,8 +994,19 @@
                     ${d.image ? `<img src="${d.image}"/>` : ''}
                     <h4 style="font-size: 22px; font-weight:800; letter-spacing:-1px; margin-bottom: 10px;">${d.title}</h4>
                     <p style="font-size:14px; color:var(--text-muted); margin-top:10px;">Check WhatsApp for instructions!</p>
-                    ${delBtn}
-                </div>`;
+                    `;
+                
+                // INJECT SPONSOR TAG FOR CASH DROP
+                if(d.sponsor && d.sponsor.name) {
+                    html += `<div class="sponsor-display-box">
+                                <span style="font-size: 11px; color: #f59e0b; text-transform: uppercase; font-weight: 800;">Sponsored By</span>
+                                <div style="font-weight: 700; color: #fff; font-size: 15px; margin: 4px 0;">${d.sponsor.name}</div>
+                                ${d.sponsor.promo ? `<p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">${d.sponsor.promo}</p>` : ''}
+                                ${d.sponsor.link ? `<a href="${d.sponsor.link}" target="_blank" class="btn btn-outline" style="padding: 8px 16px; font-size: 12px; border-color: #f59e0b; color: #f59e0b; width: 100%;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Sponsor</a>` : ''}
+                             </div>`;
+                }
+
+                html += `${delBtn}</div>`;
             });
             container.innerHTML = html;
         }
@@ -981,10 +1022,17 @@
 
         window.createPoll = async function() {
             const t = document.getElementById('pollTitle').value, cRaw = document.getElementById('pollCandidates').value, m = parseInt(document.getElementById('pollDuration').value);
+            const sName = document.getElementById('pollSponsorName').value, sLink = document.getElementById('pollSponsorLink').value, sPromo = document.getElementById('pollSponsorPromo').value;
+
             if(!t || !cRaw || m <= 0) return showToast("Title, Candidates, and Minutes required.", "error");
             let cObj = {}; cRaw.split(',').forEach(c => { let ct = c.trim(); if(ct) cObj[ct] = 0; }); let eTime = new Date(); eTime.setMinutes(eTime.getMinutes() + m);
-            await db.collection('polls').doc('active_poll').set({ title: t, candidates: cObj, endTime: eTime, status: 'active' }); showToast("Winner Poll Deployed!", "success");
+            
+            let sponsorObj = {};
+            if(sName) { sponsorObj = { name: sName, link: sLink, promo: sPromo }; }
+
+            await db.collection('polls').doc('active_poll').set({ title: t, candidates: cObj, endTime: eTime, status: 'active', sponsor: sponsorObj }); showToast("Winner Poll Deployed!", "success");
             document.getElementById('pollTitle').value = ''; document.getElementById('pollCandidates').value = ''; document.getElementById('pollDuration').value = '';
+            document.getElementById('pollSponsorName').value = ''; document.getElementById('pollSponsorLink').value = ''; document.getElementById('pollSponsorPromo').value = '';
         }
         window.endPollManually = async function() { await db.collection('polls').doc('active_poll').update({ status: 'ended', endedAt: Date.now() }); showToast("Poll ended manually.", "info"); }
 
@@ -1000,23 +1048,17 @@
             });
         }
 
-        // NEW: ADMIN PAYOUT DIRECTORY LOADER
         window.loadPayoutDirectory = async function() {
-            const outBox = document.getElementById('adminPayoutOutput');
-            outBox.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Fetching records...';
+            const outBox = document.getElementById('adminPayoutOutput'); outBox.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Fetching records...';
             try {
                 const snap = await db.collection('payouts').orderBy('updatedAt', 'desc').limit(100).get();
                 if(snap.empty) return outBox.innerHTML = '<span style="color: var(--text-muted); font-size:13px;">No payment accounts registered yet.</span>';
                 let rows = '';
                 snap.forEach(doc => {
                     const d = doc.data();
-                    rows += `<tr>
-                        <td><strong style="color:var(--text-main); font-size:13px;">${d.displayName||'N/A'}</strong><br><span style="font-size:11px; color:var(--text-muted);">${d.email||'N/A'}</span></td>
-                        <td style="color:var(--text-main); font-size:13px;">${d.method}</td>
-                        <td style="font-family:monospace; color:var(--p1); font-weight:700;">${d.name}<br><span style="color:var(--text-main);">${d.number}</span></td>
-                    </tr>`;
+                    rows += `<tr><td><strong style="color:var(--text-main); font-size:13px;">${d.displayName||'N/A'}</strong><br><span style="font-size:11px; color:var(--text-muted);">${d.email||'N/A'}</span></td><td style="color:var(--text-main); font-size:13px;">${d.method}</td><td style="font-family:monospace; color:var(--p1); font-weight:700;">${d.name}<br><span style="color:var(--text-main);">${d.number}</span></td></tr>`;
                 });
-                outBox.innerHTML = `<table class="analytics-table"><thead><tr><th>User Info</th><th>Method</th><th>Account Details (Name & Number)</th></tr></thead><tbody>${rows}</tbody></table>`;
+                outBox.innerHTML = `<table class="analytics-table"><thead><tr><th>User Info</th><th>Method</th><th>Account Details</th></tr></thead><tbody>${rows}</tbody></table>`;
             } catch(e) { outBox.innerHTML = `Error: ${e.message}`; }
         }
 
@@ -1059,7 +1101,23 @@
         window.revokeCode = async function(id) { if(confirm("Instantly revoke and expire this campaign?")) { await db.collection('codes').doc(id).update({ expiresAt: new Date(0) }); showToast("Campaign terminated.", "success"); loadAnalytics(); } }
         async function postAnnouncement() { const t = document.getElementById('announcementInput').value, sn = document.getElementById('sponsorNameInput').value, sl = document.getElementById('sponsorLinkInput').value; if(!t) return showToast("Message empty", "error"); await db.collection('settings').doc('announcement').set({ text: t, sponsorName: sn, sponsorLink: sl }); showToast("Broadcast Sent!", "success"); }
         async function clearAnnouncement() { await db.collection('settings').doc('announcement').set({ text: "", sponsorName: "", sponsorLink: "" }); showToast("Broadcast Cleared", "info"); }
-        async function postCashGiveaway() { const t = document.getElementById('cashTitle').value, a = document.getElementById('cashAmount').value, i = document.getElementById('cashImg').value; if(!t || !a) return showToast('Title and Amount required.', 'error'); await db.collection('cashGiveaways').add({ title: t, amount: a, image: i, createdAt: firebase.firestore.FieldValue.serverTimestamp() }); showToast('Cash Giveaway Deployed!', 'success'); loadCashGiveaways(); document.getElementById('cashTitle').value=''; document.getElementById('cashAmount').value=''; document.getElementById('cashImg').value=''; }
+        
+        async function postCashGiveaway() { 
+            const t = document.getElementById('cashTitle').value, a = document.getElementById('cashAmount').value, i = document.getElementById('cashImg').value; 
+            const sName = document.getElementById('cashSponsorName').value, sPromo = document.getElementById('cashSponsorPromo').value, sLink = document.getElementById('cashSponsorLink').value;
+            
+            if(!t || !a) return showToast('Title and Amount required.', 'error'); 
+            
+            let sponsorObj = {};
+            if(sName) sponsorObj = { name: sName, promo: sPromo, link: sLink };
+
+            await db.collection('cashGiveaways').add({ title: t, amount: a, image: i, sponsor: sponsorObj, createdAt: firebase.firestore.FieldValue.serverTimestamp() }); 
+            showToast('Cash Giveaway Deployed!', 'success'); loadCashGiveaways(); 
+            
+            document.getElementById('cashTitle').value=''; document.getElementById('cashAmount').value=''; document.getElementById('cashImg').value='';
+            document.getElementById('cashSponsorName').value=''; document.getElementById('cashSponsorPromo').value=''; document.getElementById('cashSponsorLink').value='';
+        }
+
         async function cleanupDatabase() {
             if(!confirm('Execute full database sweep? This deletes old codes permanently.')) return; showToast('Sweeping sector...', 'info');
             try {
