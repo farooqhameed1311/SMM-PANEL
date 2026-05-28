@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#030407"/>
 
     <style id="antiClickjack">body{display:none !important;}</style>
-    <script type="text/javascript">
+    <script type="text/javascript">F
         if (self === top) { var antiClickjack = document.getElementById("antiClickjack"); antiClickjack.parentNode.removeChild(antiClickjack); }
         else { top.location = self.location; }
     </script>
@@ -352,7 +352,7 @@
                         
                         <div id="referralInputWrapper">
                             <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-                                <span style="color:var(--text-muted); font-family:monospace;">fho.com/?ref=</span>
+                                <span style="color:var(--text-muted); font-family:monospace;">fho-giveaways.vercel.app/?ref=</span>
                                 <input class="input-box" id="userRefHandle" placeholder="YourName" style="margin-bottom:0; flex:1; min-width: 100px;" type="text"/>
                             </div>
                             <button id="btnClaimRef" class="btn" onclick="claimReferralHandle()"><i class="fa-solid fa-check"></i> Claim Link</button>
@@ -949,7 +949,7 @@
                         document.getElementById('referralInputWrapper').style.display = 'none';
                         const activeRef = document.getElementById('activeRefLink');
                         activeRef.style.display = 'block';
-                        activeRef.innerHTML = `Your Link: <span style="color:var(--text-main); font-weight:500;">fho.com/?ref=${d.referralHandle}</span> <br><span style="color:var(--text-main); font-weight:600; font-size:13px; margin-top:15px; display:inline-block; background:rgba(255,255,255,0.05); padding:10px 20px; border-radius:12px; border:1px solid var(--card-border);"><i class="fa-solid fa-users" style="color:var(--p1); margin-right:8px;"></i> Total Invites: ${d.referrals || 0}</span>`;
+                        activeRef.innerHTML = `Your Link: <span style="color:var(--text-main); font-weight:500;">fho-giveaways.vercel.app/?ref=${d.referralHandle}</span> <br><span style="color:var(--text-main); font-weight:600; font-size:13px; margin-top:15px; display:inline-block; background:rgba(255,255,255,0.05); padding:10px 20px; border-radius:12px; border:1px solid var(--card-border);"><i class="fa-solid fa-users" style="color:var(--p1); margin-right:8px;"></i> Total Invites: ${d.referrals || 0}</span>`;
                     }
                 }
             });
@@ -1017,7 +1017,7 @@
                     <p style="font-size:13px; color:var(--text-muted); margin: 12px 0;">Share our official WhatsApp Group to reveal a secret bonus asset!</p>
                     <button class="btn btn-outline" style="padding: 12px 20px; font-size:13px;" onclick="shareBonus('x')"><i class="fa-brands fa-x-twitter"></i> Post</button>
                     <button class="btn btn-outline" style="padding: 12px 20px; font-size:13px; margin-left:8px;" onclick="shareBonus('fb')"><i class="fa-brands fa-facebook"></i> Share</button>
-                    <div id="bonusAssetBox" style="display:none; margin-top:20px; background:linear-gradient(135deg, rgba(16, 185, 129, 0.1), transparent); border:1px solid rgba(16, 185, 129, 0.3); padding:15px; border-radius:12px; color:#10b981; font-weight:700;"><i class="fa-solid fa-unlock-keyhole"></i> Bonus Unlocked: <a href="fho.com" target="_blank" style="color:#10b981; text-decoration:underline;">Click Here</a></div>
+                    <div id="bonusAssetBox" style="display:none; margin-top:20px; background:linear-gradient(135deg, rgba(16, 185, 129, 0.1), transparent); border:1px solid rgba(16, 185, 129, 0.3); padding:15px; border-radius:12px; color:#10b981; font-weight:700;"><i class="fa-solid fa-unlock-keyhole"></i> Bonus Unlocked: <a href="fho-giveaways.vercel.app" target="_blank" style="color:#10b981; text-decoration:underline;">Click Here</a></div>
                 </div>`;
             document.getElementById('rewardPreview').innerHTML = `
                 <div class="discount-badge"><i class="fa-solid fa-circle-check"></i> Verified Asset</div>
@@ -1032,7 +1032,7 @@
         }
 
         window.shareBonus = function(p) {
-            let ref = document.getElementById('userRefHandle').value, targetUrl = ref ? `https://fho.com/?ref=${ref}` : 'https://chat.whatsapp.com/D2wgeEuG36X0pscOqtFnni', u = encodeURIComponent(targetUrl);
+            let ref = document.getElementById('userRefHandle').value, targetUrl = ref ? `https://fho-giveaways.vercel.app/?ref=${ref}` : 'https://chat.whatsapp.com/D2wgeEuG36X0pscOqtFnni', u = encodeURIComponent(targetUrl);
             window.open(p==='fb'?`https://www.facebook.com/sharer/sharer.php?u=${u}`:`https://twitter.com/intent/tweet?url=${u}`, '_blank', 'width=600,height=400');
             setTimeout(() => { document.getElementById('bonusAssetBox').style.display = 'block'; showToast('Bonus Unlocked!', 'success'); confetti({particleCount:50, origin:{y:0.8}}); }, 3000);
         }
