@@ -384,7 +384,7 @@
             </div>
             
             <div class="dashboard-grid">
-                
+
                 <div class="glass-panel" style="grid-column: 1 / -1; border-color: var(--p1);">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 25px;">
                         <h3 style="font-size: 24px; letter-spacing:-1px;"><i class="fa-solid fa-chart-pie" style="color:var(--p1);"></i> Advanced Analytics</h3>
@@ -1161,6 +1161,7 @@
                     <p style="font-size:14px; color:var(--text-muted); margin-top:10px;">Check WhatsApp for instructions!</p>
                     `;
                 
+                // INJECT SPONSOR TAG FOR CASH DROP
                 if(d.sponsor && d.sponsor.name) {
                     html += `<div class="sponsor-display-box" style="background: rgba(245, 158, 11, 0.08); border: 1px dashed rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 15px; margin-top: 15px; text-align: center;">
                                 <span style="font-size: 11px; color: #f59e0b; text-transform: uppercase; font-weight: 800;">Sponsored By</span>
@@ -1303,18 +1304,20 @@
 
                 // 3. Compile Global History Log (Recent Redemptions)
                 const histBox = document.getElementById('adminUserHistoryOutput');
-                const historySnap = await db.collection('codes').where('used', '==', true).orderBy('usedAt', 'desc').limit(50).get();
-                
-                if(historySnap.empty) { histBox.innerHTML = '<span style="color:var(--text-muted); font-size:13px;">No assets claimed yet.</span>'; }
-                else {
-                    let hRows = '<table class="analytics-table"><thead><tr><th>User UID</th><th>Claimed Asset</th><th>Time</th></tr></thead><tbody>';
-                    historySnap.forEach(doc => {
-                        const hd = doc.data();
-                        const timeStr = hd.usedAt ? hd.usedAt.toDate().toLocaleString() : 'Unknown';
-                        hRows += `<tr><td style="font-family:monospace; color:var(--text-muted);">${hd.usedBy || 'Unknown'}</td><td style="color:var(--text-main); font-weight:600;">${hd.giveaway.title}</td><td style="font-size:11px;">${timeStr}</td></tr>`;
-                    });
-                    hRows += '</tbody></table>';
-                    histBox.innerHTML = hRows;
+                if(histBox) {
+                    const historySnap = await db.collection('codes').where('used', '==', true).orderBy('usedAt', 'desc').limit(50).get();
+                    
+                    if(historySnap.empty) { histBox.innerHTML = '<span style="color:var(--text-muted); font-size:13px;">No assets claimed yet.</span>'; }
+                    else {
+                        let hRows = '<table class="analytics-table"><thead><tr><th>User UID</th><th>Claimed Asset</th><th>Time</th></tr></thead><tbody>';
+                        historySnap.forEach(doc => {
+                            const hd = doc.data();
+                            const timeStr = hd.usedAt ? hd.usedAt.toDate().toLocaleString() : 'Unknown';
+                            hRows += `<tr><td style="font-family:monospace; color:var(--text-muted);">${hd.usedBy || 'Unknown'}</td><td style="color:var(--text-main); font-weight:600;">${hd.giveaway.title}</td><td style="font-size:11px;">${timeStr}</td></tr>`;
+                        });
+                        hRows += '</tbody></table>';
+                        histBox.innerHTML = hRows;
+                    }
                 }
 
                 // 4. Compile Active Campaign Table & Code Usage
