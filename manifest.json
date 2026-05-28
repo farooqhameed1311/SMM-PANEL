@@ -1,0 +1,23 @@
+{
+  "name": "FHO Giveaways & Premium Portal",
+  "short_name": "FHO Portal",
+  "description": "Claim digital assets, SaaS discounts, and real cash prizes securely.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030407",
+  "theme_color": "#030407",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpv7F2JG4fi19oSg5Ps1KvZNrAlUSnFI6FokM3NJTOUEpfqz7SjhVJBr2XX7vK1rqUFRRGPEL4pi7KFIv4BXx6juiloGsqYgB-Nghe6WxFP5hYOzHU9EIyIjNp3dkQ2soX3Gdlys2jF4GeXHUum_zH7DEU9JH0GbQjnWUZWvWQBK2kaydQIla3aBKtGww/s320/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpv7F2JG4fi19oSg5Ps1KvZNrAlUSnFI6FokM3NJTOUEpfqz7SjhVJBr2XX7vK1rqUFRRGPEL4pi7KFIv4BXx6juiloGsqYgB-Nghe6WxFP5hYOzHU9EIyIjNp3dkQ2soX3Gdlys2jF4GeXHUum_zH7DEU9JH0GbQjnWUZWvWQBK2kaydQIla3aBKtGww/s320/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
