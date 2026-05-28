@@ -643,6 +643,7 @@
                 if(val.includes('claim') || val.includes('code')) reply = "Paste your code in the 'Redeem Access Key' box on the Dashboard and click Validate.";
                 if(val.includes('pay') || val.includes('money')) reply = "Go to 'Local Payout Details' to save your EasyPaisa or JazzCash info.";
                 if(val.includes('refer') || val.includes('invite')) reply = "Create a custom handle on your dashboard, then share your link. Your invites count automatically!";
+                if(val.includes('new') || val.includes('how to start')) reply = "Join our group from the below button. Contact with admin."
                 h.innerHTML += `<div style="background:rgba(14,165,233,0.15); padding:10px; border-radius:12px 12px 12px 0; border:1px solid rgba(14,165,233,0.3); align-self:flex-start; max-width:85%;">${reply}</div>`;
                 h.scrollTop = h.scrollHeight;
             }, 600);
