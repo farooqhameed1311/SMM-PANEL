@@ -29,6 +29,8 @@
 <body>
     <style type='text/css'>
     /*<![CDATA[*/
+        html { scroll-behavior: smooth; }
+        
         /* --- DYNAMIC THEME VARIABLES --- */
         :root {
             --p1: #0ea5e9; 
@@ -176,16 +178,16 @@
         #fho-bot-btn:hover { transform: scale(1.1); box-shadow: 0 15px 35px var(--p2); }
         #fho-bot-panel { display:none; position:fixed; bottom:100px; left:30px; width:340px; height:480px; z-index:1000; flex-direction:column; padding:0; overflow:hidden; border-color: var(--p1); }
 
-        /* --- NEW ADMIN PANEL LAYOUT STYLES --- */
-        .admin-wrapper { display: flex; gap: 30px; margin-top: 20px; align-items: flex-start; }
-        .admin-sidebar { width: 260px; background: rgba(0,0,0,0.4); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 16px; padding: 15px; position: sticky; top: 20px; flex-shrink: 0; box-shadow: inset 0 2px 15px rgba(244, 63, 94, 0.05); }
-        .admin-nav-btn { display: flex; align-items: center; gap: 12px; width: 100%; background: transparent; color: var(--text-muted); border: none; padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 700; text-align: left; cursor: pointer; transition: 0.3s; margin-bottom: 5px; }
+        /* --- NEW UNIFIED ADMIN PANEL LAYOUT STYLES --- */
+        .admin-wrapper { display: flex; gap: 30px; margin-top: 30px; align-items: flex-start; }
+        .admin-sidebar { width: 260px; background: rgba(0,0,0,0.4); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 16px; padding: 15px; position: sticky; top: 120px; flex-shrink: 0; box-shadow: inset 0 2px 15px rgba(244, 63, 94, 0.05); }
+        .admin-nav-btn { display: flex; align-items: center; gap: 12px; width: 100%; background: transparent; color: var(--text-muted); border: none; padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 700; text-align: left; cursor: pointer; transition: 0.3s; margin-bottom: 5px; text-decoration: none; }
         .admin-nav-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
-        .admin-nav-btn.active { background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), transparent); color: #f43f5e; border-left: 3px solid #f43f5e; border-radius: 4px 12px 12px 4px; }
-        .admin-content-area { flex: 1; min-width: 0; }
-        .admin-tab { display: none; animation: fadeIn 0.4s ease; }
-        .admin-tab.active { display: block; }
+        .admin-content-area { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 40px; padding-bottom: 100px; }
         
+        /* Smooth scrolling offsets for anchors */
+        .admin-section-anchor { scroll-margin-top: 120px; }
+
         @media(max-width: 900px) { 
             .dashboard-grid { grid-template-columns: 1fr; gap: 30px; } 
             .glass-panel { padding: 25px; } 
@@ -195,10 +197,10 @@
             #fho-bot-panel { bottom: 85px; left: 10px; width: calc(100vw - 20px); }
             
             /* Mobile Admin Adjustments */
-            .admin-wrapper { flex-direction: column; }
-            .admin-sidebar { width: 100%; position: relative; top: 0; display: flex; overflow-x: auto; padding: 10px; gap: 10px; border-radius: 12px; }
+            .admin-wrapper { flex-direction: column; margin-top: 10px; }
+            .admin-sidebar { width: 100%; position: sticky; top: 80px; display: flex; overflow-x: auto; padding: 10px; gap: 10px; border-radius: 12px; z-index: 99; background: rgba(10, 12, 18, 0.95); backdrop-filter: blur(10px); }
             .admin-nav-btn { width: auto; white-space: nowrap; margin-bottom: 0; }
-            .admin-nav-btn.active { border-left: none; border-bottom: 3px solid #f43f5e; border-radius: 12px 12px 0 0; background: linear-gradient(0deg, rgba(244, 63, 94, 0.15), transparent); }
+            .admin-section-anchor { scroll-margin-top: 160px; }
         }
         @media(max-width: 768px) { 
             .whatsapp-float span, .faq-float span { display: none; } 
@@ -382,9 +384,7 @@
                             <input class="input-box" id="userPayoutNum" placeholder="Account Number / IBAN" type="text"/>
                             <button class="btn" onclick="savePayoutDetails()"><i class="fa-solid fa-floppy-disk"></i> Save Info</button>
                         </div>
-                    </div>
 
-                    <div style="display:flex; flex-direction:column; gap:40px;">
                         <div class="glass-panel">
                             <h2 style="margin-bottom: 15px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-link"></i> Custom Referral URL</h2>
                             <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Claim a branded short-link to track your invites.</p>
@@ -404,147 +404,157 @@
             </div>
             </div>
 
-        <div id="panel-admin" style="display: none;">
+        <div id="panel-admin" style="display: none; padding-top: 20px;">
             
-            <div class="header-bar" style="border-bottom: none; margin-bottom: 0;">
-                <h2 style="color: #f43f5e; font-size: 32px; font-weight:800; letter-spacing:-1px;"><i class="fa-solid fa-server"></i> Command Center</h2>
+            <div class="header-bar" style="border-bottom: 1px solid var(--card-border); margin-bottom: 0; padding: 20px 0; background: rgba(3,4,7,0.9); position: sticky; top:0; z-index: 101; backdrop-filter: blur(15px);">
+                <h2 style="color: #f43f5e; font-size: 32px; font-weight:800; letter-spacing:-1px; margin:0;"><i class="fa-solid fa-server"></i> Command Center</h2>
                 <button class="btn btn-outline" onclick="toggleAdminPanel()" style="width:auto; border-color: #f43f5e; color: #f43f5e;"><i class="fa-solid fa-arrow-left"></i> Exit Admin</button>
             </div>
 
             <div class="admin-wrapper">
+                
                 <div class="admin-sidebar">
-                    <button class="admin-nav-btn active" onclick="switchAdminTab('admin-analytics')"><i class="fa-solid fa-chart-pie"></i> Analytics</button>
-                    <button class="admin-nav-btn" onclick="switchAdminTab('admin-deploy')"><i class="fa-solid fa-rocket"></i> Deployments</button>
-                    <button class="admin-nav-btn" onclick="switchAdminTab('admin-monetize')"><i class="fa-solid fa-money-bill-wave"></i> Monetization</button>
-                    <button class="admin-nav-btn" onclick="switchAdminTab('admin-manage')"><i class="fa-solid fa-users-gear"></i> Management</button>
+                    <a href="#admin-sec-analytics" class="admin-nav-btn"><i class="fa-solid fa-chart-pie"></i> Analytics & Traffic</a>
+                    <a href="#admin-sec-campaigns" class="admin-nav-btn"><i class="fa-solid fa-rocket"></i> Deploy Campaigns</a>
+                    <a href="#admin-sec-polls" class="admin-nav-btn"><i class="fa-solid fa-square-poll-vertical"></i> Live Poll Control</a>
+                    <a href="#admin-sec-cash" class="admin-nav-btn"><i class="fa-solid fa-money-bills"></i> Cash Drop Deploy</a>
+                    <a href="#admin-sec-ads" class="admin-nav-btn"><i class="fa-solid fa-rectangle-ad"></i> Ad Manager Network</a>
+                    <a href="#admin-sec-users" class="admin-nav-btn"><i class="fa-solid fa-users-gear"></i> Users & Payouts</a>
+                    <a href="#admin-sec-system" class="admin-nav-btn"><i class="fa-solid fa-gears"></i> System & Database</a>
                 </div>
 
                 <div class="admin-content-area">
                     
-                    <div id="admin-analytics" class="admin-tab active">
-                        <div class="glass-panel" style="border-color: #f43f5e;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 25px;">
-                                <h3 style="font-size: 24px; letter-spacing:-1px;"><i class="fa-solid fa-chart-pie" style="color:#f43f5e;"></i> Advanced Analytics</h3>
-                                <div style="display:flex; gap:10px;">
-                                    <button class="btn btn-outline" onclick="loadAnalytics()" style="padding: 10px 18px; font-size: 13px;"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
-                                </div>
-                            </div>
+                    <div id="admin-sec-analytics" class="admin-section-anchor glass-panel" style="border-color: #f43f5e;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 25px;">
+                            <h3 style="font-size: 24px; letter-spacing:-1px;"><i class="fa-solid fa-chart-pie" style="color:#f43f5e;"></i> Advanced Analytics</h3>
+                            <button class="btn btn-outline" onclick="loadAnalytics()" style="padding: 10px 18px; font-size: 13px; width:auto;"><i class="fa-solid fa-rotate-right"></i> Refresh Data</button>
+                        </div>
 
-                            <h4 style="color:var(--text-muted); margin-bottom:15px; font-size:14px;">Traffic Overview</h4>
-                            <div class="kpi-grid">
-                                <div class="kpi-card"><i class="fa-solid fa-eye" style="color:var(--p1);"></i><div class="kpi-val" id="kpi-today">0</div><div class="kpi-label">Today</div></div>
-                                <div class="kpi-card"><i class="fa-solid fa-eye" style="color:var(--text-muted);"></i><div class="kpi-val" id="kpi-yest">0</div><div class="kpi-label">Yesterday</div></div>
-                                <div class="kpi-card"><i class="fa-solid fa-calendar" style="color:var(--p2);"></i><div class="kpi-val" id="kpi-month">0</div><div class="kpi-label">This Month</div></div>
-                                <div class="kpi-card"><i class="fa-solid fa-calendar" style="color:var(--text-muted);"></i><div class="kpi-val" id="kpi-lmonth">0</div><div class="kpi-label">Last Month</div></div>
-                                <div class="kpi-card"><i class="fa-solid fa-globe" style="color:#10b981;"></i><div class="kpi-val" id="kpi-life">0</div><div class="kpi-label">Lifetime Views</div></div>
-                            </div>
+                        <h4 style="color:var(--text-muted); margin-bottom:15px; font-size:14px;">Traffic Overview</h4>
+                        <div class="kpi-grid">
+                            <div class="kpi-card"><i class="fa-solid fa-eye" style="color:var(--p1);"></i><div class="kpi-val" id="kpi-today">0</div><div class="kpi-label">Today</div></div>
+                            <div class="kpi-card"><i class="fa-solid fa-eye" style="color:var(--text-muted);"></i><div class="kpi-val" id="kpi-yest">0</div><div class="kpi-label">Yesterday</div></div>
+                            <div class="kpi-card"><i class="fa-solid fa-calendar" style="color:var(--p2);"></i><div class="kpi-val" id="kpi-month">0</div><div class="kpi-label">This Month</div></div>
+                            <div class="kpi-card"><i class="fa-solid fa-calendar" style="color:var(--text-muted);"></i><div class="kpi-val" id="kpi-lmonth">0</div><div class="kpi-label">Last Month</div></div>
+                            <div class="kpi-card"><i class="fa-solid fa-globe" style="color:#10b981;"></i><div class="kpi-val" id="kpi-life">0</div><div class="kpi-label">Lifetime Views</div></div>
+                        </div>
 
-                            <h4 style="color:var(--text-muted); margin-top:20px; margin-bottom:15px; font-size:14px;">User & Platform Stats</h4>
-                            <div class="kpi-grid">
-                                <div class="kpi-card"><i class="fa-solid fa-users" style="color:#0ea5e9;"></i><div class="kpi-val" id="kpi-users">0</div><div class="kpi-label">Total Users</div></div>
-                                <div class="kpi-card"><i class="fa-solid fa-user-clock" style="color:#10b981;"></i><div class="kpi-val" id="kpi-active">0</div><div class="kpi-label">Active Now (15m)</div></div>
-                                <div class="kpi-card"><i class="fa-solid fa-ticket" style="color:#8b5cf6;"></i><div class="kpi-val" id="kpi-codes">0</div><div class="kpi-label">Assets Claimed</div></div>
-                                <div class="kpi-card"><i class="fa-solid fa-link" style="color:#f59e0b;"></i><div class="kpi-val" id="kpi-referrals">0</div><div class="kpi-label">Total Referrals</div></div>
-                            </div>
+                        <h4 style="color:var(--text-muted); margin-top:20px; margin-bottom:15px; font-size:14px;">User & Platform Stats</h4>
+                        <div class="kpi-grid">
+                            <div class="kpi-card"><i class="fa-solid fa-users" style="color:#0ea5e9;"></i><div class="kpi-val" id="kpi-users">0</div><div class="kpi-label">Total Users</div></div>
+                            <div class="kpi-card"><i class="fa-solid fa-user-clock" style="color:#10b981;"></i><div class="kpi-val" id="kpi-active">0</div><div class="kpi-label">Active Now (15m)</div></div>
+                            <div class="kpi-card"><i class="fa-solid fa-ticket" style="color:#8b5cf6;"></i><div class="kpi-val" id="kpi-codes">0</div><div class="kpi-label">Assets Claimed</div></div>
+                            <div class="kpi-card"><i class="fa-solid fa-link" style="color:#f59e0b;"></i><div class="kpi-val" id="kpi-referrals">0</div><div class="kpi-label">Total Referrals</div></div>
+                        </div>
 
-                            <h4 style="color:var(--text-muted); margin-top:20px; margin-bottom:15px; font-size:14px;">Live Global Activity (Recent Redemptions)</h4>
-                            <div id="adminUserHistoryOutput" style="max-height: 250px; overflow-y: auto; margin-bottom: 25px; border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;"><span style="color: var(--text-muted); font-size: 15px; padding: 10px;">Loading history...</span></div>
+                        <h4 style="color:var(--text-muted); margin-top:20px; margin-bottom:15px; font-size:14px;">Live Global Activity (Recent Redemptions)</h4>
+                        <div id="adminUserHistoryOutput" style="max-height: 250px; overflow-y: auto; margin-bottom: 25px; border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;"><span style="color: var(--text-muted); font-size: 15px; padding: 10px;">Loading history...</span></div>
 
-                            <h4 style="color:var(--text-muted); margin-top:20px; margin-bottom:15px; font-size:14px;">Active Campaigns List</h4>
-                            <div style="overflow-x: auto; border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
-                                <div id="analyticsOutput"><span style="color: var(--text-muted); font-size: 15px; padding: 10px;">Loading network data...</span></div>
-                            </div>
+                        <h4 style="color:var(--text-muted); margin-top:20px; margin-bottom:15px; font-size:14px;">Active Campaigns List</h4>
+                        <div style="overflow-x: auto; border: 1px solid var(--card-border); border-radius: 12px; padding: 10px;">
+                            <div id="analyticsOutput"><span style="color: var(--text-muted); font-size: 15px; padding: 10px;">Loading network data...</span></div>
                         </div>
                     </div>
 
-                    <div id="admin-deploy" class="admin-tab">
+                    <div id="admin-sec-campaigns" class="admin-section-anchor glass-panel">
+                        <h3 style="margin-bottom: 30px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-rocket"></i> Deploy Asset Campaign</h3>
+                        
+                        <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Architecture Format</label>
+                        <select class="input-box" id="adminCodeFormat" onchange="toggleCodeFormatUI()" style="margin-top:8px;">
+                            <option value="unique">Generate Batch of Unique Codes</option>
+                            <option value="master">Create Single Master Code (Multi-Use)</option>
+                        </select>
+
+                        <div id="masterCodeGroup" style="display:none;">
+                            <input class="input-box" id="adminCustomCode" placeholder="Custom Master Code (e.g. FHO-MEGA)" style="text-transform: uppercase;" type="text"/>
+                        </div>
+
+                        <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Asset Type</label>
+                        <select class="input-box" id="adminType" onchange="toggleDiscountUI()" style="margin-top:8px;">
+                            <option value="gift">Free Digital Asset</option>
+                            <option value="discount">SaaS / Product Discount</option>
+                        </select>
+
+                        <input class="input-box" id="adminTitle" placeholder="Campaign Title" type="text"/>
+                        <textarea class="input-box" id="adminDesc" placeholder="Description details..."></textarea>
+                        <input class="input-box" id="adminImg" placeholder="Thumbnail Image URL" type="text"/>
+                        
+                        <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Destination URL</label>
+                        <input class="input-box" id="adminLink" placeholder="Enter links (comma separated for mystery box)" type="text" style="margin-top:8px;"/>
+
+                        <div id="adminDiscountBox" style="display:none; background: rgba(0,0,0,0.5); padding: 25px; border-radius: 16px; margin-bottom: 20px; border: 1px dashed var(--card-border);">
+                            <label style="font-size:13px; color:var(--text-main); font-weight:700;"><i class="fa-solid fa-tags"></i> Pricing Economics</label>
+                            <input class="input-box" id="adminOldPrice" placeholder="Original Price (PKR)" style="margin-top:15px;" type="number"/>
+                            <input class="input-box" id="adminNewPrice" placeholder="Discount Price (PKR)" style="margin-bottom:0;" type="number"/>
+                        </div>
+                        
+                        <div class="responsive-2col">
+                            <div>
+                                <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Expiry (Hours)</label>
+                                <input class="input-box" id="adminExpiry" placeholder="Blank for none" type="number" style="margin-top:8px;"/>
+                            </div>
+                            <div>
+                                <label id="amountLabel" style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Quantity</label>
+                                <input class="input-box" id="adminAmount" placeholder="Amount" type="number" value="50" style="margin-top:8px;"/>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-danger" onclick="generateCampaign()" style="margin-top: 15px; width:auto;"><i class="fa-solid fa-satellite-dish"></i> Execute Deployment</button>
+                        <div id="adminOutput" style="margin-top:25px; max-height:200px; overflow:auto; font-family:monospace; color:var(--p1); font-size:14px; background:rgba(0,0,0,0.8); padding: 20px; border-radius: 12px; display:none;"></div>
+                    </div>
+
+                    <div id="admin-sec-polls" class="admin-section-anchor">
                         <div class="grid-2">
                             <div class="glass-panel">
-                                <h3 style="margin-bottom: 30px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-rocket"></i> Deploy Campaign</h3>
-                                
-                                <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Architecture Format</label>
-                                <select class="input-box" id="adminCodeFormat" onchange="toggleCodeFormatUI()" style="margin-top:8px;">
-                                    <option value="unique">Generate Batch of Unique Codes</option>
-                                    <option value="master">Create Single Master Code (Multi-Use)</option>
-                                </select>
+                                <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-square-poll-vertical"></i> Deploy Winner Poll</h3>
+                                <input class="input-box" id="pollTitle" placeholder="Poll Title (e.g., $100 Prize Winner)" type="text"/>
+                                <textarea class="input-box" id="pollCandidates" placeholder="Enter Participant Names (comma separated)"></textarea>
+                                <input class="input-box" id="pollDuration" placeholder="Duration (Minutes)" type="number"/>
 
-                                <div id="masterCodeGroup" style="display:none;">
-                                    <input class="input-box" id="adminCustomCode" placeholder="Custom Master Code (e.g. FHO-MEGA)" style="text-transform: uppercase;" type="text"/>
+                                <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-top:10px; display:block;">Sponsorship Details (Optional)</label>
+                                <div class="responsive-2col" style="margin-top:8px; margin-bottom:20px;">
+                                    <input class="input-box" id="pollSponsorName" placeholder="Sponsor Name" type="text" style="margin-bottom:0;"/>
+                                    <input class="input-box" id="pollSponsorLink" placeholder="Sponsor URL" type="text" style="margin-bottom:0;"/>
                                 </div>
-
-                                <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Asset Type</label>
-                                <select class="input-box" id="adminType" onchange="toggleDiscountUI()" style="margin-top:8px;">
-                                    <option value="gift">Free Digital Asset</option>
-                                    <option value="discount">SaaS / Product Discount</option>
-                                </select>
-
-                                <input class="input-box" id="adminTitle" placeholder="Campaign Title" type="text"/>
-                                <textarea class="input-box" id="adminDesc" placeholder="Description details..."></textarea>
-                                <input class="input-box" id="adminImg" placeholder="Thumbnail Image URL" type="text"/>
+                                <input class="input-box" id="pollSponsorPromo" placeholder="Sponsor Promo Text (e.g. 50% Off Code: FHO50)" type="text"/>
                                 
-                                <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Destination URL</label>
-                                <input class="input-box" id="adminLink" placeholder="Enter links (comma separated for mystery box)" type="text" style="margin-top:8px;"/>
-
-                                <div id="adminDiscountBox" style="display:none; background: rgba(0,0,0,0.5); padding: 25px; border-radius: 16px; margin-bottom: 20px; border: 1px dashed var(--card-border);">
-                                    <label style="font-size:13px; color:var(--text-main); font-weight:700;"><i class="fa-solid fa-tags"></i> Pricing Economics</label>
-                                    <input class="input-box" id="adminOldPrice" placeholder="Original Price (PKR)" style="margin-top:15px;" type="number"/>
-                                    <input class="input-box" id="adminNewPrice" placeholder="Discount Price (PKR)" style="margin-bottom:0;" type="number"/>
+                                <div style="display:flex; gap:15px; flex-wrap:wrap;">
+                                    <button class="btn" onclick="createPoll()"><i class="fa-solid fa-play"></i> Start Poll</button>
+                                    <button class="btn btn-outline" onclick="endPollManually()"><i class="fa-solid fa-stop"></i> End</button>
                                 </div>
-                                
-                                <div class="responsive-2col">
-                                    <div>
-                                        <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Expiry (Hours)</label>
-                                        <input class="input-box" id="adminExpiry" placeholder="Blank for none" type="number" style="margin-top:8px;"/>
-                                    </div>
-                                    <div>
-                                        <label id="amountLabel" style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Quantity</label>
-                                        <input class="input-box" id="adminAmount" placeholder="Amount" type="number" value="50" style="margin-top:8px;"/>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn btn-danger" onclick="generateCampaign()" style="margin-top: 15px;"><i class="fa-solid fa-satellite-dish"></i> Execute Deployment</button>
-                                <div id="adminOutput" style="margin-top:25px; max-height:200px; overflow:auto; font-family:monospace; color:var(--p1); font-size:14px; background:rgba(0,0,0,0.8); padding: 20px; border-radius: 12px; display:none;"></div>
                             </div>
-
-                            <div style="display:flex; flex-direction:column; gap:30px;">
-                                <div class="glass-panel">
-                                    <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-square-poll-vertical"></i> Deploy Winner Poll</h3>
-                                    
-                                    <input class="input-box" id="pollTitle" placeholder="Poll Title (e.g., $100 Prize Winner)" type="text"/>
-                                    <textarea class="input-box" id="pollCandidates" placeholder="Enter Participant Names (comma separated)"></textarea>
-                                    <input class="input-box" id="pollDuration" placeholder="Duration (Minutes)" type="number"/>
-
-                                    <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-top:10px; display:block;">Sponsorship Details (Optional)</label>
-                                    <div class="responsive-2col" style="margin-top:8px; margin-bottom:20px;">
-                                        <input class="input-box" id="pollSponsorName" placeholder="Sponsor Name" type="text" style="margin-bottom:0;"/>
-                                        <input class="input-box" id="pollSponsorLink" placeholder="Sponsor URL" type="text" style="margin-bottom:0;"/>
+                            
+                            <div class="glass-panel">
+                                <h3 style="margin-bottom: 20px; font-size: 20px; letter-spacing:-1px;"><i class="fa-solid fa-users-viewfinder"></i> Live Poll Voters</h3>
+                                <div style="overflow-x: auto;">
+                                    <div id="adminPollVotersList" style="max-height: 350px; overflow-y: auto; min-width: 300px; border: 1px solid var(--card-border); border-radius:12px; padding: 10px;">
+                                        <div style="text-align:center; color:var(--text-muted); font-size:14px; padding: 30px;">Waiting for active poll data...</div>
                                     </div>
-                                    <input class="input-box" id="pollSponsorPromo" placeholder="Sponsor Promo Text (e.g. 50% Off Code: FHO50)" type="text"/>
-                                    
-                                    <div style="display:flex; gap:15px; flex-wrap:wrap;">
-                                        <button class="btn" onclick="createPoll()"><i class="fa-solid fa-play"></i> Start Poll</button>
-                                        <button class="btn btn-outline" onclick="endPollManually()"><i class="fa-solid fa-stop"></i> End</button>
-                                    </div>
-                                </div>
-
-                                <div class="glass-panel">
-                                    <h3 style="margin-bottom: 20px; font-size: 20px; letter-spacing:-1px;"><i class="fa-solid fa-money-bills"></i> Cash Drop</h3>
-                                    <input class="input-box" id="cashTitle" placeholder="Title" type="text"/>
-                                    <input class="input-box" id="cashAmount" placeholder="Amount (PKR)" type="number"/>
-                                    <input class="input-box" id="cashImg" placeholder="Image URL" type="text"/>
-                                    
-                                    <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-top:10px; display:block;">Sponsorship Details (Optional)</label>
-                                    <input class="input-box" id="cashSponsorName" placeholder="Sponsor Name" type="text" style="margin-top:8px;"/>
-                                    <input class="input-box" id="cashSponsorPromo" placeholder="Sponsor Promo Text" type="text"/>
-                                    <input class="input-box" id="cashSponsorLink" placeholder="Sponsor URL" type="text"/>
-
-                                    <button class="btn" onclick="postCashGiveaway()">Deploy Cash</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="admin-monetize" class="admin-tab">
+                    <div id="admin-sec-cash" class="admin-section-anchor glass-panel">
+                        <h3 style="margin-bottom: 20px; font-size: 20px; letter-spacing:-1px;"><i class="fa-solid fa-money-bills"></i> Deploy Cash Drop</h3>
+                        <div class="responsive-2col">
+                            <div>
+                                <input class="input-box" id="cashTitle" placeholder="Giveaway Title" type="text"/>
+                                <input class="input-box" id="cashAmount" placeholder="Amount (PKR)" type="number"/>
+                                <input class="input-box" id="cashImg" placeholder="Image URL" type="text"/>
+                            </div>
+                            <div>
+                                <label style="font-size:11px; color:var(--text-muted); font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; display:block;">Sponsorship Details (Optional)</label>
+                                <input class="input-box" id="cashSponsorName" placeholder="Sponsor Name" type="text"/>
+                                <input class="input-box" id="cashSponsorPromo" placeholder="Sponsor Promo Text" type="text"/>
+                                <input class="input-box" id="cashSponsorLink" placeholder="Sponsor URL" type="text"/>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="postCashGiveaway()" style="width:auto; margin-top:10px;"><i class="fa-solid fa-paper-plane"></i> Deploy Cash Drop</button>
+                    </div>
+
+                    <div id="admin-sec-ads" class="admin-section-anchor">
                         <div class="grid-2">
                             <div class="glass-panel" style="border-color: rgba(14, 165, 233, 0.4);">
                                 <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-image" style="color:var(--p1);"></i> Custom Dashboard Ad</h3>
@@ -556,93 +566,81 @@
                                 
                                 <div style="display:flex; gap:15px; flex-wrap:wrap;">
                                     <button class="btn" onclick="deployCustomPromo()"><i class="fa-solid fa-paper-plane"></i> Deploy Ad</button>
-                                    <button class="btn btn-outline" onclick="disableCustomPromo()"><i class="fa-solid fa-xmark"></i> Remove Ad</button>
+                                    <button class="btn btn-outline" onclick="disableCustomPromo()"><i class="fa-solid fa-xmark"></i> Remove</button>
                                 </div>
                             </div>
 
-                            <div style="display:flex; flex-direction:column; gap:30px;">
-                                <div class="glass-panel" style="border-color: rgba(245, 158, 11, 0.3);">
-                                    <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-ad" style="color:#f59e0b;"></i> Global Ad Network</h3>
-                                    <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Manage up to 10 ad codes. They will automatically rotate every 60 seconds on user screens.</p>
-                                    
-                                    <div style="display:flex; gap:15px; margin-bottom: 20px; flex-wrap: wrap;">
-                                        <select class="input-box" id="adSlotSelect" onchange="loadAdSlot()" style="margin-bottom:0; flex:1; min-width: 150px;">
-                                            <option value="slot1">Ad Slot 1</option> <option value="slot2">Ad Slot 2</option> <option value="slot3">Ad Slot 3</option>
-                                            <option value="slot4">Ad Slot 4</option> <option value="slot5">Ad Slot 5</option> <option value="slot6">Ad Slot 6</option>
-                                            <option value="slot7">Ad Slot 7</option> <option value="slot8">Ad Slot 8</option> <option value="slot9">Ad Slot 9</option> <option value="slot10">Ad Slot 10</option>
-                                        </select>
-                                        <div id="activeAdIndicator" style="display:none; color:#10b981; font-size:13px; font-weight:800; align-items:center; padding: 0 10px;"><i class="fa-solid fa-circle-check" style="margin-right:8px;"></i> ACTIVE</div>
-                                    </div>
-
-                                    <textarea class="input-box" id="adCodeInput" placeholder="Paste HTML/JS Script Code here..."></textarea>
-                                    
-                                    <div style="display:flex; gap:15px; flex-wrap:wrap;">
-                                        <button class="btn btn-outline" onclick="saveAdSlot()"><i class="fa-solid fa-save"></i> Save</button>
-                                        <button class="btn" onclick="activateAdSlot()"><i class="fa-solid fa-play"></i> Enable</button>
-                                        <button class="btn btn-outline" onclick="disableAds()" style="border-color: #ef4444; color: #ef4444; width: 100%;"><i class="fa-solid fa-power-off"></i> Disable All Ads</button>
-                                    </div>
+                            <div class="glass-panel" style="border-color: rgba(245, 158, 11, 0.3);">
+                                <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-ad" style="color:#f59e0b;"></i> Global Ad Network</h3>
+                                <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Manage 10 ad codes. They rotate every 60 seconds on user screens.</p>
+                                
+                                <div style="display:flex; gap:15px; margin-bottom: 20px; flex-wrap: wrap;">
+                                    <select class="input-box" id="adSlotSelect" onchange="loadAdSlot()" style="margin-bottom:0; flex:1; min-width: 150px;">
+                                        <option value="slot1">Ad Slot 1</option> <option value="slot2">Ad Slot 2</option> <option value="slot3">Ad Slot 3</option>
+                                        <option value="slot4">Ad Slot 4</option> <option value="slot5">Ad Slot 5</option> <option value="slot6">Ad Slot 6</option>
+                                        <option value="slot7">Ad Slot 7</option> <option value="slot8">Ad Slot 8</option> <option value="slot9">Ad Slot 9</option> <option value="slot10">Ad Slot 10</option>
+                                    </select>
+                                    <div id="activeAdIndicator" style="display:none; color:#10b981; font-size:13px; font-weight:800; align-items:center; padding: 0 10px;"><i class="fa-solid fa-circle-check" style="margin-right:8px;"></i> ACTIVE</div>
                                 </div>
 
-                                <div class="glass-panel">
-                                    <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-bullhorn"></i> Global Broadcast</h3>
-                                    <input class="input-box" id="announcementInput" placeholder="Broadcast message..." type="text"/>
-                                    
-                                    <div class="responsive-2col" style="margin-bottom: 20px;">
-                                        <input class="input-box" id="sponsorNameInput" placeholder="Sponsor Name (Optional)" type="text" style="margin-bottom:0;"/>
-                                        <input class="input-box" id="sponsorLinkInput" placeholder="Sponsor URL (Optional)" type="text" style="margin-bottom:0;"/>
-                                    </div>
-
-                                    <div style="display:flex; gap:15px; flex-wrap:wrap;">
-                                        <button class="btn" onclick="postAnnouncement()"><i class="fa-solid fa-paper-plane"></i> Broadcast</button>
-                                        <button class="btn btn-outline" onclick="clearAnnouncement()"><i class="fa-solid fa-xmark"></i> Clear</button>
-                                    </div>
+                                <textarea class="input-box" id="adCodeInput" placeholder="Paste HTML/JS Script Code here..."></textarea>
+                                
+                                <div style="display:flex; gap:15px; flex-wrap:wrap;">
+                                    <button class="btn btn-outline" onclick="saveAdSlot()"><i class="fa-solid fa-save"></i> Save</button>
+                                    <button class="btn" onclick="activateAdSlot()"><i class="fa-solid fa-play"></i> Enable</button>
+                                    <button class="btn btn-outline" onclick="disableAds()" style="border-color: #ef4444; color: #ef4444; width: 100%;"><i class="fa-solid fa-power-off"></i> Disable All Ads</button>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel">
+                            <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-bullhorn"></i> Global Broadcast Alert</h3>
+                            <input class="input-box" id="announcementInput" placeholder="Broadcast message (appears across the entire site)..." type="text"/>
+                            
+                            <div class="responsive-2col" style="margin-bottom: 20px;">
+                                <input class="input-box" id="sponsorNameInput" placeholder="Sponsor Name (Optional)" type="text" style="margin-bottom:0;"/>
+                                <input class="input-box" id="sponsorLinkInput" placeholder="Sponsor URL (Optional)" type="text" style="margin-bottom:0;"/>
+                            </div>
+
+                            <div style="display:flex; gap:15px; flex-wrap:wrap;">
+                                <button class="btn" onclick="postAnnouncement()" style="width:auto;"><i class="fa-solid fa-paper-plane"></i> Send Broadcast</button>
+                                <button class="btn btn-outline" onclick="clearAnnouncement()" style="width:auto;"><i class="fa-solid fa-xmark"></i> Clear Alert</button>
                             </div>
                         </div>
                     </div>
 
-                    <div id="admin-manage" class="admin-tab">
+                    <div id="admin-sec-users" class="admin-section-anchor">
                         <div class="grid-2">
-                            <div style="display:flex; flex-direction:column; gap:30px;">
-                                <div class="glass-panel" style="overflow-x: auto; border-color: rgba(16, 185, 129, 0.4);">
-                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-                                        <h3 style="font-size: 20px; letter-spacing:-1px;"><i class="fa-solid fa-address-book" style="color:#10b981;"></i> User Payout Directory</h3>
-                                        <button class="btn btn-outline" onclick="loadPayoutDirectory()" style="padding: 8px 16px; font-size: 13px;"><i class="fa-solid fa-rotate-right"></i></button>
-                                    </div>
-                                    <div id="adminPayoutOutput" style="max-height: 350px; overflow-y:auto;"><span style="color: var(--text-muted); font-size: 14px;">Loading payment accounts...</span></div>
+                            <div class="glass-panel" style="overflow-x: auto; border-color: rgba(16, 185, 129, 0.4);">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                                    <h3 style="font-size: 20px; letter-spacing:-1px;"><i class="fa-solid fa-address-book" style="color:#10b981;"></i> User Payout Directory</h3>
+                                    <button class="btn btn-outline" onclick="loadPayoutDirectory()" style="padding: 8px 16px; font-size: 13px; width:auto;"><i class="fa-solid fa-rotate-right"></i></button>
                                 </div>
-
-                                <div class="glass-panel">
-                                    <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-palette"></i> Real-Time Theme Engine</h3>
-                                    <div class="theme-grid"></div>
-                                    <textarea class="input-box" id="cssInjectorInput" placeholder="Custom CSS variables..." style="font-family:monospace; font-size:13px; margin-top:15px;"></textarea>
-                                    <button class="btn btn-outline" onclick="saveCustomCSS()">Save Custom Injection</button>
-                                </div>
+                                <div id="adminPayoutOutput" style="max-height: 350px; overflow-y:auto;"><span style="color: var(--text-muted); font-size: 14px;">Loading payment accounts...</span></div>
                             </div>
 
-                            <div style="display:flex; flex-direction:column; gap:30px;">
-                                <div class="glass-panel">
-                                    <h3 style="margin-bottom: 20px; font-size: 20px; letter-spacing:-1px;"><i class="fa-solid fa-users-viewfinder"></i> Live Poll Voters</h3>
-                                    <div style="overflow-x: auto;">
-                                        <div id="adminPollVotersList" style="max-height: 300px; overflow-y: auto; min-width: 300px; border: 1px solid var(--card-border); border-radius:12px; padding: 10px;">
-                                            <div style="text-align:center; color:var(--text-muted); font-size:14px; padding: 30px;">Waiting for active poll data...</div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="glass-panel">
+                                <h3 style="margin-bottom: 20px; font-size: 20px; letter-spacing:-1px;"><i class="fa-solid fa-trophy" style="color:#f59e0b;"></i> Leaderboard Season Control</h3>
+                                <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Wipe all user referral counts to exactly 0 to begin a brand new competitive season across the platform.</p>
+                                <button class="btn btn-outline" onclick="resetLeaderboardSeason()" style="color:#f59e0b; border-color:#f59e0b; width:100%;"><i class="fa-solid fa-rotate-left"></i> Execute Global Season Reset</button>
+                            </div>
+                        </div>
+                    </div>
 
-                                <div class="glass-panel">
-                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-                                        <h3 style="font-size: 20px; letter-spacing:-1px;"><i class="fa-solid fa-trophy" style="color:#f59e0b;"></i> Leaderboard Control</h3>
-                                    </div>
-                                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Wipe all user referral counts to exactly 0 to begin a brand new competitive season.</p>
-                                    <button class="btn btn-outline" onclick="resetLeaderboardSeason()" style="color:#f59e0b; border-color:#f59e0b; width:100%;"><i class="fa-solid fa-rotate-left"></i> Execute Season Reset</button>
-                                </div>
+                    <div id="admin-sec-system" class="admin-section-anchor">
+                        <div class="grid-2">
+                            <div class="glass-panel">
+                                <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-palette"></i> Real-Time Theme Engine</h3>
+                                <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Click a preset below to instantly re-theme the entire platform live for all users.</p>
+                                <div class="theme-grid"></div>
+                                <textarea class="input-box" id="cssInjectorInput" placeholder="Custom CSS variables..." style="font-family:monospace; font-size:13px; margin-top:15px;"></textarea>
+                                <button class="btn btn-outline" onclick="saveCustomCSS()"><i class="fa-solid fa-code"></i> Save Custom Injection</button>
+                            </div>
 
-                                <div class="glass-panel" style="border-color: rgba(239,68,68,0.3);">
-                                    <h3 style="margin-bottom: 20px; font-size: 20px; color:#ef4444; letter-spacing:-1px;"><i class="fa-solid fa-broom"></i> DB Sweep</h3>
-                                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:25px;">Safely permanently delete expired and depleted codes from Firebase storage.</p>
-                                    <button class="btn btn-danger" onclick="cleanupDatabase(false)"><i class="fa-solid fa-trash"></i> Execute Sweep</button>
-                                </div>
+                            <div class="glass-panel" style="border-color: rgba(239,68,68,0.3);">
+                                <h3 style="margin-bottom: 20px; font-size: 20px; color:#ef4444; letter-spacing:-1px;"><i class="fa-solid fa-broom"></i> Database Sweep</h3>
+                                <p style="font-size:14px; color:var(--text-muted); margin-bottom:25px;">Safely permanently delete expired and depleted asset codes from Firebase storage to save bandwidth and keep analytics clean.</p>
+                                <button class="btn btn-danger" onclick="cleanupDatabase(false)"><i class="fa-solid fa-trash"></i> Execute DB Sweep</button>
                             </div>
                         </div>
                     </div>
@@ -765,14 +763,6 @@
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        function switchAdminTab(tabId) {
-            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.admin-nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            try { document.querySelector(`[onclick="switchAdminTab('${tabId}')"]`).classList.add('active'); } catch(e){}
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
         // Admin Toggle fully separates the view
         window.toggleAdminPanel = function() { 
             const pAdmin = document.getElementById('panel-admin'); 
@@ -787,6 +777,21 @@
                 window.scrollTo({top: 0, behavior: 'smooth'});
             }
         }
+
+        // Update active sidebar state on scroll
+        const adminSections = document.querySelectorAll('.admin-section-anchor');
+        const adminNavLinks = document.querySelectorAll('.admin-nav-btn');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            adminSections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) { current = section.getAttribute('id'); }
+            });
+            adminNavLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) { link.classList.add('active'); }
+            });
+        });
 
         window.toggleBot = function() { const p = document.getElementById('fho-bot-panel'); p.style.display = p.style.display === 'none' ? 'flex' : 'none'; };
         window.sendBotMsg = function() {
@@ -1320,6 +1325,9 @@
             } catch(e){ showToast("Reset error", "error"); }
         };
 
+        function toggleDiscountUI() { document.getElementById('adminDiscountBox').style.display = document.getElementById('adminType').value === 'discount' ? 'block' : 'none'; }
+        function toggleCodeFormatUI() { const isM = document.getElementById('adminCodeFormat').value === 'master'; document.getElementById('masterCodeGroup').style.display = isM ? 'block' : 'none'; document.getElementById('amountLabel').innerText = isM ? 'Max Allowable Uses' : 'Batch Quantity'; }
+
         window.createPoll = async function() {
             const t = document.getElementById('pollTitle').value, cRaw = document.getElementById('pollCandidates').value, m = parseInt(document.getElementById('pollDuration').value);
             const sName = document.getElementById('pollSponsorName').value, sLink = document.getElementById('pollSponsorLink').value, sPromo = document.getElementById('pollSponsorPromo').value;
@@ -1427,7 +1435,7 @@
                 if(histBox) {
                     const historySnap = await db.collection('codes').where('used', '==', true).orderBy('usedAt', 'desc').limit(50).get();
                     
-                    if(historySnap.empty) { histBox.innerHTML = '<span style="color:var(--text-muted); font-size:13px;">No assets claimed yet.</span>'; }
+                    if(historySnap.empty) { histBox.innerHTML = '<span style="color:var(--text-muted); font-size:13px; padding: 10px;">No assets claimed yet.</span>'; }
                     else {
                         let hRows = '<table class="analytics-table"><thead><tr><th>User UID</th><th>Claimed Asset</th><th>Time</th></tr></thead><tbody>';
                         historySnap.forEach(doc => {
@@ -1444,7 +1452,7 @@
                 const snap = await db.collection('codes').orderBy('createdAt', 'desc').limit(150).get();
                 if(snap.empty) {
                     document.getElementById('kpi-codes').innerText = '0';
-                    return outBox.innerHTML = '<span style="color: var(--text-muted);">No active campaigns found.</span>';
+                    return outBox.innerHTML = '<span style="color: var(--text-muted); padding: 10px;">No active campaigns found.</span>';
                 }
                 
                 let rows = '';
