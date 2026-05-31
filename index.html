@@ -300,6 +300,14 @@
                 <a id="customPromoLink" href="#" target="_blank" class="btn btn-outline" style="padding: 8px 20px; font-size: 13px; border-color: var(--p1); color: var(--p1);">Learn More</a>
             </div>
 
+            <!-- CUSTOM DASHBOARD PROMO BANNER -->
+<div id="custom-promo-container" class="glass-panel" style="display:none; border-color: var(--p1); padding: 20px; text-align: center; margin-bottom: 30px;">
+    <span style="font-size: 10px; color: var(--p1); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; display: block;"><i class="fa-solid fa-star"></i> Featured Sponsor</span>
+    <img id="customPromoImg" src="" style="max-width: 100%; border-radius: 12px; margin-bottom: 15px; display:none; max-height: 250px; object-fit: cover;" />
+    <h3 id="customPromoText" style="font-size: 18px; color: var(--text-main); margin-bottom: 15px;"></h3>
+    <a id="customPromoLink" href="#" target="_blank" class="btn btn-outline" style="padding: 8px 20px; font-size: 13px; border-color: var(--p1); color: var(--p1);">Learn More</a>
+</div>
+
             <div id="dashboard-ad-container" class="dash-ad">
                 <div id="dashboard-ad-content"></div>
             </div>
@@ -515,6 +523,21 @@
                         </div>
                         <div id="adminPayoutOutput"><span style="color: var(--text-muted); font-size: 14px;">Loading payment accounts...</span></div>
                     </div>
+
+                    <!-- CUSTOM DASHBOARD AD ADMIN PANEL -->
+<div class="glass-panel" style="border-color: rgba(14, 165, 233, 0.4);">
+    <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-image" style="color:var(--p1);"></i> Custom Dashboard Ad</h3>
+    <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Deploy a custom image &amp; text advertisement directly to the top of user dashboards.</p>
+    
+    <input class="input-box" id="promoImgInput" placeholder="Ad Image URL (Optional)" type="text"/>
+    <input class="input-box" id="promoTextInput" placeholder="Sponsor Headline / Promo Text" type="text"/>
+    <input class="input-box" id="promoLinkInput" placeholder="Target URL" type="text"/>
+    
+    <div style="display:flex; gap:15px; flex-wrap:wrap;">
+        <button class="btn" onclick="deployCustomPromo()"><i class="fa-solid fa-paper-plane"></i> Deploy Ad</button>
+        <button class="btn btn-outline" onclick="disableCustomPromo()"><i class="fa-solid fa-xmark"></i> Remove Ad</button>
+    </div>
+</div>
 
                     <div class="glass-panel" style="border-color: rgba(14, 165, 233, 0.4);">
                         <h3 style="margin-bottom: 20px; font-size: 22px; letter-spacing:-1px;"><i class="fa-solid fa-image" style="color:var(--p1);"></i> Custom Dashboard Ad</h3>
@@ -804,6 +827,50 @@
             showToast("Custom Ad Disabled", "info");
         }
 
+        db.collection('settings').doc('custom_promo').onSnapshot(doc => {
+            const cont = document.getElementById('custom-promo-container');
+            if(!cont) return;
+            if(doc.exists && doc.data().enabled) {
+                const d = doc.data();
+                document.getElementById('customPromoText').innerText = d.text;
+                document.getElementById('customPromoLink').href = d.link;
+                const imgEl = document.getElementById('customPromoImg');
+                if(d.image) {
+                    imgEl.src = d.image;
+                    imgEl.style.display = 'inline-block';
+                } else {
+                    imgEl.style.display = 'none';
+                }
+                cont.style.display = 'block';
+            } else {
+                cont.style.display = 'none';
+            }
+        });
+
+        // ==========================================
+        // CUSTOM DASHBOARD AD SYSTEM
+        // ==========================================
+        window.deployCustomPromo = async function() {
+            const img = document.getElementById('promoImgInput').value.trim();
+            const text = document.getElementById('promoTextInput').value.trim();
+            const link = document.getElementById('promoLinkInput').value.trim();
+            
+            if(!text || !link) return showToast("Headline and Link are required.", "error");
+            
+            await db.collection('settings').doc('custom_promo').set({ image: img, text: text, link: link, enabled: true });
+            showToast("Custom Ad Deployed!", "success");
+            
+            document.getElementById('promoImgInput').value = '';
+            document.getElementById('promoTextInput').value = '';
+            document.getElementById('promoLinkInput').value = '';
+        }
+
+        window.disableCustomPromo = async function() {
+            await db.collection('settings').doc('custom_promo').set({ enabled: false }, { merge: true });
+            showToast("Custom Ad Disabled", "info");
+        }
+
+        // Live Listener to update user screens instantly
         db.collection('settings').doc('custom_promo').onSnapshot(doc => {
             const cont = document.getElementById('custom-promo-container');
             if(!cont) return;
